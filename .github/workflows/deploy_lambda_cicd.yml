@@ -51,10 +51,9 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          python -m pip install --upgrade pip
-          pip install -r requirements.txt
+          curl -Ls https://astral.sh/uv/install.sh | sh
+          uv venv --python=python3.11
+          uv pip install .
 
       - name: Deploy to AWS Lambda
         env:
