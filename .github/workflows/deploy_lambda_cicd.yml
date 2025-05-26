@@ -27,10 +27,10 @@ jobs:
 
       - name: Install dependencies
         run: |
-          python -m venv .venv
+          curl -Ls https://astral.sh/uv/install.sh | sh
+          uv venv --python=python3.11
+          uv pip install .
           source .venv/bin/activate
-          python -m pip install --upgrade pip
-          pip install pre-commit mypy
 
       - name: Run pre-commit
         run: |
@@ -54,6 +54,7 @@ jobs:
           curl -Ls https://astral.sh/uv/install.sh | sh
           uv venv --python=python3.11
           uv pip install .
+          source .venv/bin/activate
 
       - name: Deploy to AWS Lambda
         env:
