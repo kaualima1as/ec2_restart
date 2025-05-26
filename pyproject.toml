@@ -1,0 +1,11 @@
+[project]
+name = "ec2-restart"
+version = "0.1.0"
+description = "Add your description here"
+readme = "README.md"
+requires-python = ">=3.11.12"
+dependencies = [
+    "mypy==1.15.0",
+    "pre-commit==4.2.0",
+    "ruff==0.11.11",
+]

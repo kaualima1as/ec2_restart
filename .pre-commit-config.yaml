@@ -1,0 +1,64 @@
+# This file manage the pre-commit hooks for the project.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+      - id: end-of-file-fixer
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.9.9
+    hooks:
+      # Run Ruff to lint all issues and apply auto-fixes.
+      - id: ruff
+        name: ruff
+        entry: ruff
+        args: ["check", "--fix", "."]
+        language: python
+        types_or: [python, pyi, jupyter]
+        exclude: ^migrations/
+      # Run Ruff to check and fix import issues only.
+      - id: ruff
+        name: ruff-imports
+        entry: ruff
+        args: ["check", "--select", "I", "--fix", "."]
+        language: python
+        types_or: [python, pyi, jupyter]
+        exclude: ^migrations/
+      # Run Ruff to apply formatting only.
+      - id: ruff
+        name: ruff-format
+        entry: ruff
+        args: ["format", "."]
+        language: python
+        types_or: [python, pyi, jupyter]
+        exclude: ^migrations/
+
+  - repo: local
+    hooks:
+      - id: custom-mypy
+        name: Run mypy on entire codebase
+        entry: .venv/bin/mypy
+        language: system
+        args: [
+          "--strict",
+          "--ignore-missing-imports",
+          "--explicit-package-bases",
+          "--disable-error-code=var-annotated",
+          "--disable-error-code=no-untyped-def",
+          "--disable-error-code=no-untyped-call",
+          "--disable-error-code=unused-ignore",
+          "--disable-error-code=no-any-return",
+          "--disable-error-code=misc",
+          "--exclude",
+          "^(migrations/|.*migrations/|.*generated_models/|tests/|.*/tests/|test_.*\\.py)",
+          "."
+        ]
+        pass_filenames: false
+
+  - repo: https://github.com/PyCQA/bandit
+    rev: 1.8.3
+    hooks:
+      - id: bandit
+        args: ["--exclude", "tests/,test_*,*tests.py"]
+        exclude: ^migrations/
