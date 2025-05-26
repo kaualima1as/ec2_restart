@@ -9,7 +9,7 @@ def handler(event, context):
 
     ec2 = boto3.client("ec2")
     try:
-        response = ec2.stop_instances(InstanceIds=[instance_id])
-        print(f"Stop initiated for instance {instance_id}. Response: {response}")
+        response = ec2.reboot_instances(InstanceIds=[instance_id])
+        print(f"Reboot initiated for instance {instance_id}. Response: {response}")
     except Exception as e:
         print(f"Error rebooting instance: {e}")
