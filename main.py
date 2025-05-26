@@ -4,7 +4,7 @@ import boto3
 def handler(event, context):
     instance_id = event.get("instance_id") if event else None
     if not instance_id:
-        print("Instance ID not provided.")
+        print("Instance ID not provided")
         return
 
     ec2 = boto3.client("ec2")
