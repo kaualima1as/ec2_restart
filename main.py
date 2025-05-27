@@ -1,3 +1,5 @@
+import time
+
 import boto3
 
 
@@ -8,14 +10,37 @@ def handler(event, context):
         return
 
     ec2 = boto3.client("ec2")
+    ssm = boto3.client("ssm")
+
     try:
-        response = ec2.describe_instances(InstanceIds=[instance_id])
-        state = response["Reservations"][0]["Instances"][0]["State"]["Name"]
+        response_ec2 = ec2.describe_instances(InstanceIds=[instance_id])
+        state = response_ec2["Reservations"][0]["Instances"][0]["State"]["Name"]
 
         if state == "running":
-            response = ec2.reboot_instances(InstanceIds=[instance_id])
+            response_ssm = ssm.send_command(
+                InstanceIds=[instance_id],
+                DocumentName="AWS-RunShellScript",
+                Parameters={
+                    "commands": [
+                        "mkdir test_directory",
+                        "echo 'This is a test file.' > test_directory/test_file.txt",
+                        "ls -l test_directory",
+                    ]
+                },
+            )
+
+            command_id = response_ssm["Command"]["CommandId"]
+
+            time.sleep(10)  # Wait for the command to be processed
+
+            output = ssm.get_command_invocation(
+                CommandId=command_id, InstanceId=instance_id
+            )
+
+            response_ec2 = ec2.reboot_instances(InstanceIds=[instance_id])
             return {
-                "body": f"Reboot initiated for instance {instance_id}. Response: {response}",
+                "body": f"Reboot initiated for instance {instance_id}. Response: {response_ec2}",
+                "ssm": f"SSM output: {output}",
                 "statusCode": 200,
             }
         elif state == "stopped":

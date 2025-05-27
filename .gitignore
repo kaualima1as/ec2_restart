@@ -185,3 +185,5 @@ cython_debug/
 # PyPI configuration file
 .pypirc
 >>>>>>> d1d880d6b244cb6d6f0a0e67013aee1578012781
+
+pair-test.pem
