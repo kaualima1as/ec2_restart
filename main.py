@@ -24,9 +24,9 @@ def handler(event, context):
         if state == "running":
             commands = [
                 "cd /home/ubuntu",
-                "sudo apt-get autoremove -y >> /tmp/clean_activity.log 2>&1",
-                "sudo apt-get autoclean -y >> /tmp/clean_activity.log 2>&1",
-                "sudo apt-get clean >> /tmp/clean_activity.log 2>&1",
+                "sudo apt-get autoremove -y",
+                "sudo apt-get autoclean -y",
+                "sudo apt-get clean",
                 "docker system prune -f >> /tmp/clean_activity.log 2>&1",
                 "echo -e '\\n\\n\\n' >> /tmp/clean_activity.log",
                 "docker image prune -a -f >> /tmp/clean_activity.log 2>&1",
@@ -38,7 +38,6 @@ def handler(event, context):
                 "sudo rm -rf /var/tmp/* >> /tmp/clean_activity.log 2>&1",
                 "sudo journalctl --vacuum-time=7d >> /tmp/clean_activity.log 2>&1",
                 "rm -rf ~/.cache/* >> /tmp/clean_activity.log 2>&1",
-                "echo '--- FINAL CLEAN LOG ---' >> /tmp/clean_activity.log",
                 "cat /tmp/clean_activity.log",
             ]
 
