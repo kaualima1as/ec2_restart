@@ -22,7 +22,7 @@ def handler(event, context):
                 DocumentName="AWS-RunShellScript",
                 Parameters={
                     "commands": [
-                        "mkdir test_directory",
+                        "mkdir app/test_directory",
                         "echo 'This is a test file.' > test_directory/test_file.txt",
                         "ls -l test_directory",
                     ]
