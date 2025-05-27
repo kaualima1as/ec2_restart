@@ -48,18 +48,15 @@ def handler(event, context):
                 and attempts < max_attempts
             ):
                 attempts += 1
-                time.sleep(5)  # Espera 5 segundos entre as tentativas
+                time.sleep(5)
                 try:
                     ssm_output = ssm.get_command_invocation(
                         CommandId=command_id, InstanceId=instance_id
                     )
                     ssm_status = ssm_output["Status"]
                 except ssm.exceptions.InvocationDoesNotExist:
-                    # Pode acontecer se o comando ainda não foi registrado completamente
-                    ssm_status = "Pending"  # Continua tentando
-                    if (
-                        attempts >= max_attempts
-                    ):  # Evita loop infinito se nunca aparecer
+                    ssm_status = "Pending"
+                    if attempts >= max_attempts:
                         return {
                             "body": f"SSM command {command_id} invocation did not appear after {attempts * 5} seconds.",
                             "statusCode": 500,
@@ -89,11 +86,13 @@ def handler(event, context):
 
             final_message_body = f"Instance {instance_id} processed. SSM commands successful. Reboot was NOT initiated (code commented out)."
 
+            ec2.reboot_instances(InstanceIds=[instance_id])
+
+            print(f"Instance {instance_id} rebooted successfully.")
+
             return {
                 "body": final_message_body,
-                "ssm_output_details": str(
-                    ssm_output
-                ),  # Retorna o output completo do SSM
+                "ssm_output_details": str(ssm_output),
                 "statusCode": 200,
             }
         elif state == "stopped":
