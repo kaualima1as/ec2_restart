@@ -25,9 +25,10 @@ def handler(event, context):
 
         if state == "running":
             commands = [
-                "mkdir -p /home/ubuntu/app/test_directory/test",
-                "echo 'This is a test file.' > /home/ubuntu/app/test_directory/test/test_file.txt",
-                "ls -l app/test_directory/test",
+                "cd /home/ubuntu",
+                "echo 'Iniciando outros comandos...'",
+                "docker system prune -f > /tmp/docker_prune_activity.log 2>&1",
+                "cat /tmp/docker_prune_activity.log",
             ]
 
             print(f"Sending commands to instance {instance_id}: {commands}")
