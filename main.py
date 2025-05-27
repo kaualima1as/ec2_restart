@@ -36,8 +36,7 @@ def handler(event, context):
             output = ssm.get_command_invocation(
                 CommandId=command_id, InstanceId=instance_id
             )
-
-            response_ec2 = ec2.reboot_instances(InstanceIds=[instance_id])
+            # response_ec2 = ec2.reboot_instances(InstanceIds=[instance_id])
             return {
                 "body": f"Reboot initiated for instance {instance_id}. Response: {response_ec2}",
                 "ssm": f"SSM output: {output}",
