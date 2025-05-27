@@ -25,8 +25,8 @@ def handler(event, context):
 
         if state == "running":
             commands = [
-                "mkdir -p app/test_directory/test",
-                "echo 'This is a test file.' > app/test_directory/test/test_file.txt",
+                "mkdir -p /home/ubuntu/app/test_directory/test",
+                "echo 'This is a test file.' > /home/ubuntu/app/test_directory/test/test_file.txt",
                 "ls -l app/test_directory/test",
             ]
 
