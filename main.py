@@ -38,8 +38,7 @@ def handler(event, context):
                 "echo --- Cleaning temp and logs ---",
                 "sudo rm -rf /tmp/*",
                 "sudo rm -rf /var/tmp/*",
-                "sudo journalctl --vacuum-time=7d"
-                "echo --- Cleaning pip and cache ---"
+                "sudo journalctl --vacuum-time=7decho --- Cleaning pip and cache ---",
                 "rm -rf ~/.cache/*",
                 "cat /tmp/clean_activity.log",
             ]
