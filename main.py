@@ -31,7 +31,7 @@ def handler(event, context):
 
             command_id = response_ssm["Command"]["CommandId"]
 
-            time.sleep(10)  # Wait for the command to be processed
+            time.sleep(120)  # Wait for the command to be processed
 
             output = ssm.get_command_invocation(
                 CommandId=command_id, InstanceId=instance_id
