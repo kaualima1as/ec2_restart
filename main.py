@@ -79,9 +79,12 @@ def handler(event, context):
                     "statusCode": 500,
                 }
 
-            print("--- START OF OUTPUT ---")
-            print(ssm_output.get("StandardOutputContent", ""))
-            print("--- END OF OUTPUT ---")
+            print("-- START OF OUTPUT --")
+            if ssm_output and ssm_output.get("StandardOutputContent"):
+                print(ssm_output["StandardOutputContent"])
+            else:
+                print("No output from SSM command.")
+            print("-- END OF OUTPUT --")
 
             final_message_body = f"Instance {instance_id} processed. SSM commands successful. Reboot was NOT initiated (code commented out)."
 
