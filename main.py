@@ -25,6 +25,8 @@ def handler(event, context):
             commands = [
                 "cd /home/ubuntu",
                 "docker system prune -f > /tmp/docker_prune_activity.log 2>&1",
+                "echo -e \n\n\n >> /tmp/docker_prune_activity.log",
+                "nix-collect-garbage -d >> /tmp/docker_prune_activity.log 2>&1",
                 "cat /tmp/docker_prune_activity.log",
             ]
 
