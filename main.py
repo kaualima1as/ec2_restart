@@ -6,14 +6,12 @@ import boto3
 def handler(event, context):
     instance_id = event.get("instance_id") if event else None
     if not instance_id:
-        print("Instance ID not provided")
         return {"body": "Instance ID not provided", "statusCode": 400}
 
     ec2 = boto3.client("ec2")
     ssm = boto3.client("ssm")
 
     try:
-        # Verifica o estado da instância primeiro
         instance_info = ec2.describe_instances(InstanceIds=[instance_id])
         if (
             not instance_info["Reservations"]
@@ -26,7 +24,6 @@ def handler(event, context):
         if state == "running":
             commands = [
                 "cd /home/ubuntu",
-                "echo 'Iniciando outros comandos...'",
                 "docker system prune -f > /tmp/docker_prune_activity.log 2>&1",
                 "cat /tmp/docker_prune_activity.log",
             ]
@@ -39,7 +36,6 @@ def handler(event, context):
             )
 
             command_id = response_ssm["Command"]["CommandId"]
-            print(f"SSM Command ID: {command_id} sent to instance {instance_id}")
 
             ssm_output = None
             ssm_status = "Pending"
@@ -57,19 +53,12 @@ def handler(event, context):
                         CommandId=command_id, InstanceId=instance_id
                     )
                     ssm_status = ssm_output["Status"]
-                    print(
-                        f"SSM Command status: {ssm_status} (Attempt {attempts}/{max_attempts})"
-                    )
                 except ssm.exceptions.InvocationDoesNotExist:
                     # Pode acontecer se o comando ainda não foi registrado completamente
-                    print(
-                        f"SSM Invocation for Command ID {command_id} not found yet. Retrying... (Attempt {attempts}/{max_attempts})"
-                    )
                     ssm_status = "Pending"  # Continua tentando
                     if (
                         attempts >= max_attempts
                     ):  # Evita loop infinito se nunca aparecer
-                        print("SSM command invocation never appeared.")
                         return {
                             "body": f"SSM command {command_id} invocation did not appear after {attempts * 5} seconds.",
                             "statusCode": 500,
@@ -82,7 +71,6 @@ def handler(event, context):
                     error_message += (
                         f" Error details: {ssm_output.get('StandardErrorContent')}"
                     )
-                print(error_message)
                 return {
                     "body": error_message,
                     "ssm_output": str(
@@ -90,6 +78,10 @@ def handler(event, context):
                     ),  # Incluir o output completo para debug
                     "statusCode": 500,
                 }
+
+            print("--- START OF OUTPUT ---")
+            print(ssm_output.get("StandardOutputContent", ""))
+            print("--- END OF OUTPUT ---")
 
             final_message_body = f"Instance {instance_id} processed. SSM commands successful. Reboot was NOT initiated (code commented out)."
 
