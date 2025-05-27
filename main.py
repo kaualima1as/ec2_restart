@@ -28,7 +28,6 @@ def handler(event, context):
                 "cat /tmp/docker_prune_activity.log",
             ]
 
-            print(f"Sending commands to instance {instance_id}: {commands}")
             response_ssm = ssm.send_command(
                 InstanceIds=[instance_id],
                 DocumentName="AWS-RunShellScript",
