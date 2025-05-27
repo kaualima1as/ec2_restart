@@ -29,7 +29,7 @@ def handler(event, context):
                 "sudo apt-get clean",
                 "docker system prune -f > /tmp/clean_activity.log 2>&1",
                 "echo -e \n\n\n >> /tmp/clean_activity.log",
-                "docker image prune -a -f >> /tmp/clean_activity.log 2>&1"
+                "docker image prune -a -f >> /tmp/clean_activity.log 2>&1",
                 "echo -e \n\n\n >> /tmp/clean_activity.log",
                 "docker volume prune -f >> /tmp/clean_activity.log 2>&1",
                 "echo -e \n\n\n >> /tmp/clean_activity.log",
