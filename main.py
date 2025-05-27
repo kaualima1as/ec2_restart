@@ -24,11 +24,9 @@ def handler(event, context):
         if state == "running":
             commands = [
                 "cd /home/ubuntu",
-                "echo --- Cleaning APT ---",
                 "sudo apt-get autoremove -y",
                 "sudo apt-get autoclean -y",
                 "sudo apt-get clean",
-                "echo --- Cleaning Docker ---",
                 "docker system prune -f > /tmp/clean_activity.log 2>&1",
                 "echo -e \n\n\n >> /tmp/clean_activity.log",
                 "docker image prune -a -f >> /tmp/clean_activity.log 2>&1"
@@ -37,13 +35,13 @@ def handler(event, context):
                 "echo -e \n\n\n >> /tmp/clean_activity.log",
                 "echo --- Cleaning Nix ---",
                 "nix-collect-garbage -d >> /tmp/clean_activity.log 2>&1",
-                "cat /tmp/clean_activity.log",
                 "echo --- Cleaning temp and logs ---",
                 "sudo rm -rf /tmp/*",
                 "sudo rm -rf /var/tmp/*",
                 "sudo journalctl --vacuum-time=7d"
                 "echo --- Cleaning pip and cache ---"
                 "rm -rf ~/.cache/*",
+                "cat /tmp/clean_activity.log",
             ]
 
             response_ssm = ssm.send_command(
