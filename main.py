@@ -27,7 +27,7 @@ def handler(event, context):
                 "sudo apt-get autoremove -y",
                 "sudo apt-get autoclean -y",
                 "sudo apt-get clean",
-                "docker system prune -f >> /tmp/clean_activity.log 2>&1",
+                "docker system prune -f > /tmp/clean_activity.log 2>&1",
                 "docker image prune -a -f >> /tmp/clean_activity.log 2>&1",
                 "docker volume prune -f >> /tmp/clean_activity.log 2>&1",
                 "nix-collect-garbage -d >> /tmp/clean_activity.log 2>&1",
