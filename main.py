@@ -40,7 +40,6 @@ def handler(event, context):
             command_id = response_ssm["Command"]["CommandId"]
             print(f"SSM Command ID: {command_id} sent to instance {instance_id}")
 
-            # --- Melhoria: Polling para o status do comando SSM ---
             ssm_output = None
             ssm_status = "Pending"
             max_attempts = 24
