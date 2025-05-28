@@ -1,4 +1,4 @@
-# 🧹 Automação de Limpeza e Reinicialização de EC2 com AWS Lambda + SSM
+# Automação de Limpeza e Reinicialização de EC2 com AWS Lambda + SSM
 
 Este projeto tem como objetivo automatizar a **limpeza de recursos desnecessários e a reinicialização periódica** de instâncias EC2, garantindo desempenho consistente e liberação de espaço em disco — tudo de forma **automática e sem intervenção manual**.
 
