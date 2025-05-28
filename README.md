@@ -4,18 +4,18 @@ Este projeto tem como objetivo automatizar a **limpeza de recursos desnecessári
 
 ---
 
-## 📌 Visão Geral
+## Visão Geral
 
 | Etapa                         | Descrição                                                                 |
 |------------------------------|---------------------------------------------------------------------------|
-| ✅ Passos para Implementação  | Guia prático para configurar a automação                                 |
-| 🧠 Código                     | Função Lambda em Python com `boto3`                                       |
-| 🧹 Comandos de Limpeza        | Scripts executados via SSM nas instâncias EC2                            |
-| 📁 Repositório                | Este projeto contém todo o código necessário                             |
+| Passos para Implementação  | Guia prático para configurar a automação                                 |
+| Código                     | Função Lambda em Python com `boto3`                                       |
+| Comandos de Limpeza        | Scripts executados via SSM nas instâncias EC2                            |
+| Repositório                | Este projeto contém todo o código necessário                             |
 
 ---
 
-## 🎯 Objetivo
+## Objetivo
 
 Automatizar tarefas de manutenção em instâncias EC2, como:
 - Liberação de espaço em disco.
@@ -25,7 +25,7 @@ Automatizar tarefas de manutenção em instâncias EC2, como:
 
 ---
 
-## ⚙️ Arquitetura Utilizada
+## Arquitetura Utilizada
 
 - **Amazon EC2:** Máquinas virtuais que serão limpas.
 - **AWS Systems Manager (SSM):** Execução remota de comandos com segurança.
@@ -35,13 +35,13 @@ Automatizar tarefas de manutenção em instâncias EC2, como:
 
 ---
 
-## 🧩 Passos para Implementação
+## Passos para Implementação
 
-### 1. ✅ Preparar a EC2
+### 1. Preparar a EC2
 - Verifique se o **SSM Agent** está instalado e em execução (a maioria das AMIs já vem com ele).
 - Anexe à EC2 uma **IAM Role** com a política `AmazonSSMManagedInstanceCore`.
 
-### 2. 🧠 Criar a Função Lambda
+### 2. Criar a Função Lambda
 - Use o código Python disponível em [`lambda_function.py`](./lambda_function.py).
 - A função recebe o ID da instância como entrada e executa os comandos definidos.
 
@@ -50,12 +50,12 @@ Automatizar tarefas de manutenção em instâncias EC2, como:
 - `ec2:DescribeInstances`
 - `ec2:RebootInstances`
 
-### 3. ⏱️ Agendar via Amazon EventBridge
+### 3. Agendar via Amazon EventBridge
 - Crie uma regra de cron (ex: diariamente às 23h) que acione a função Lambda com o ID da instância como parâmetro.
 
 ---
 
-## 🧼 Comandos de Limpeza Utilizados
+## Comandos de Limpeza Utilizados
 
 ```bash
 # Limpeza de pacotes e arquivos temporários
